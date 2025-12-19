@@ -26,6 +26,10 @@ class CustomerController extends BaseApiController
 
     public function store(CustomerStoreRequest $request)
     {
+        // If use base
+        // $customer = $this->service->create($request->validated());
+
+        // If use Repo
         $customer = $this->service->create($request->validated());
 
         return $this->success(
@@ -39,7 +43,7 @@ class CustomerController extends BaseApiController
     {
         return $this->success(
             new CustomerResource($this->service->find($customer))
-        );  
+        );
     }
 
     public function update(CustomerStoreRequest $request, Customer $customer)
@@ -60,5 +64,19 @@ class CustomerController extends BaseApiController
         $this->service->delete($customer);
 
         return $this->success(null, 'Customer deleted');
+    }
+
+    public function deactivate(int $customer)
+    {
+        $this->service->deactivateById($customer);
+
+        return $this->success(null, 'Customer deactivated');
+    }
+
+    public function reactivate(int $customer)
+    {
+        $this->service->reactivateById($customer);
+
+        return $this->success(null, 'Customer reactivated');
     }
 }
